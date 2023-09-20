@@ -26,7 +26,7 @@ public class BookDAO {
         }
     }
     public void insertBook(Book book) {
-        String sql = "insert into book values(?,?,?,?);";
+        String sql = "insert into book values(?,?,?,?,?);";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);
@@ -34,6 +34,7 @@ public class BookDAO {
             pstmt.setString(2, book.getBookName());
             pstmt.setString(3, book.getAuthor());
             pstmt.setBoolean(4, book.isLoaned());
+            pstmt.setInt(5, book.whoLoaned());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -50,14 +51,15 @@ public class BookDAO {
     }
 
     public void updateBook(Book book) {
-        String sql = "update book set bookName=?, author=?, isLoaned=? where bookNum = ?;";
+        String sql = "update book set bookName=?, author=?, isLoaned=?, whoLoaned=? where bookNum = ?;";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, book.getBookName());
             pstmt.setString(2, book.getAuthor());
             pstmt.setBoolean(3, book.isLoaned());
-            pstmt.setInt(4,book.getBookNum());
+            pstmt.setInt(4, book.whoLoaned());
+            pstmt.setInt(5,book.getBookNum());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -108,6 +110,7 @@ public class BookDAO {
                 re.setBookName(rs.getString("bookName"));
                 re.setAuthor(rs.getString("author"));
                 re.setLoaned(rs.getBoolean("isLoaned"));
+                re.setWhoLoaned(rs.getInt("whoLoaned"));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -140,6 +143,7 @@ public class BookDAO {
                 s.setBookName(re.getString("bookName"));
                 s.setAuthor(re.getString("author"));
                 s.setLoaned(re.getBoolean("isLoaned"));
+                s.setWhoLoaned(re.getInt("whoLoaned"));
                 list.add(s);
             }
 

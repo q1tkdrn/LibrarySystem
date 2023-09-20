@@ -1,6 +1,7 @@
 package io.github.sanggu39.main.utill;
 
 import io.github.sanggu39.main.classes.Book;
+import io.github.sanggu39.main.classes.User;
 import io.github.sanggu39.main.sql.BookDAO;
 
 import java.util.List;
@@ -40,8 +41,9 @@ public class BookManager {
         System.out.print(">");
         String author = sc.next();
         Boolean isLoaned = false;
+        int whoLoaned = 0;
 
-        Book book = new Book(bookNum, bookName, author, isLoaned);
+        Book book = new Book(bookNum, bookName, author, isLoaned, whoLoaned);
 
         bookDAO.insertBook(book);
     }
@@ -64,12 +66,14 @@ public class BookManager {
                     .append(")")
                     .append(" 대출여부:")
                     .append(isLaoned)
+                    .append(" id:")
+                    .append(book.whoLoaned())
                     .append("\n");
         }
         System.out.println(sb);
     }
 
-    public void loanBook() {
+    public void loanBook(User user) {
         Scanner sc = new Scanner(System.in);
         boolean isExist = false;
         Book book = null;
@@ -110,11 +114,12 @@ public class BookManager {
         }
 
         book.setLoaned(true);
+        book.setWhoLoaned(user.getUserNum());
         bookDAO.updateBook(book);
         System.out.println("대여 완료");
     }
 
-    public void returnBook() {
+    public void returnBook(User user) {
         Scanner sc = new Scanner(System.in);
         Book book = null;
         boolean isExist = false;
@@ -148,7 +153,9 @@ public class BookManager {
             }
             if (isExist) {
                 if(book.isLoaned()) {
-                    break;
+                    if (book.whoLoaned == user.getUserNum()) {
+                        break;
+                    } else System.out.println(user.getId() + "님이 대여한 책이 아닙니다.");
                 } else System.out.println("대여 되지 않은 책입니다.");
             } else System.out.println("해당 이름과 같은 책이 없습니다.");
         }

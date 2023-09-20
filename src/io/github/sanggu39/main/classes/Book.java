@@ -5,12 +5,14 @@ public class Book {
     String bookName;
     String author;
     boolean isLoaned;
+    public int whoLoaned;
 
-    public Book(int bookNum, String bookName, String author, Boolean isLoaned) {
+    public Book(int bookNum, String bookName, String author, Boolean isLoaned, int whoLoaned) {
         this.bookNum =bookNum;
         this.bookName = bookName;
         this.author = author;
         this.isLoaned = isLoaned;
+        this.whoLoaned = whoLoaned;
     }
 
     public Book(){}
@@ -38,6 +40,12 @@ public class Book {
     }
     public void setLoaned(boolean isLoaned) {
         this.isLoaned = isLoaned;
+    }
+    public int whoLoaned() {
+        return whoLoaned;
+    }
+    public void setWhoLoaned(int whoLoaned) {
+        this.whoLoaned = whoLoaned;
     }
 
     @Override
